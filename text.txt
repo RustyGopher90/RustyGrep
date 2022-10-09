@@ -1,0 +1,6 @@
+This is a file to grep.
+we love grep files and they are great.
+This is a random line.
+Did you hear about the italian chef who died?
+He pasta-way.
+I know, super corny!!
