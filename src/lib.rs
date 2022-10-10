@@ -1,26 +1,24 @@
 pub mod Configure {
-
     pub struct Config {
-        pub search_term : String,
+        pub search_term :String,
         pub file_path : String
     }
     impl Config {
-        pub fn get_arg_values(args:Vec<String>) -> Config {
-            let search_term:String = args[2].to_string();
-            let file_path:String = args[4].to_string();
-            Config { search_term, file_path }
-        }
-        pub fn check_args(args:Vec<String>) -> Result<Vec<String>, &'static str> {
+        pub fn check_args(args:Vec<String>) -> Result<Config, &'static str> {
+            let mut new_config = Config{search_term:String::from(""), file_path:String::from("")};
             if args.len()!= 5 {
                 return Err("you need to provide 4 arguments")
             }
-            if args[1] != "-s" {
-                return Err("You need to pass a string first and then a File. \nExample -s somestring -f somefilepath.")
+            for (i,arg) in args.iter().enumerate() {
+                if i%2 != 0 {
+                    match arg.as_str() {
+                        "-f" => new_config.file_path = args[i+1].clone(),
+                        "-s" => new_config.search_term = args[i+1].clone(),
+                        _ => println!("nothing found")
+                    }
+                }
             }
-            if args[3] != "-f" {
-                return Err("You need to pass a string first and then a File. \nExample -s somestring -f somefilepath.")
-            }
-            return Ok(args)
+            Ok(new_config)
         }
         pub fn search<'a>(search_string:&'a String, file_contents:&'a String) -> Vec<&'a str> {
             file_contents

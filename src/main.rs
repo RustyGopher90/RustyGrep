@@ -1,13 +1,13 @@
-use std::{env::{self}, fs};
+use std::{env::{self}, fs, process};
 use rustyGrep::Configure::Config;
 
 fn main() {
     let args = Config::check_args(env::args().collect());
     if args.as_ref().is_err(){
-        println!("{}", args.as_ref().err().unwrap())
+        println!("{}", args.as_ref().err().unwrap());
+        process::exit(1);
     }
-    let all_args:Vec<String> = args.ok().unwrap();
-    let values:Config = Config::get_arg_values(all_args);
+    let values:Config = args.ok().unwrap();
     
     let file_contents = fs::read_to_string(&values.file_path);
     if file_contents.is_err() {
